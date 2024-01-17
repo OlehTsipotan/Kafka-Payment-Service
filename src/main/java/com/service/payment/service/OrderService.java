@@ -29,7 +29,7 @@ public class OrderService {
             order.setStatus(OrderStatus.ACCEPT);
         } catch (ServiceException e) {
             order.setStatus(OrderStatus.REJECT);
-            throw e;
+            log.info("Error during reservation creation", e);
         }
 
         kafkaPaymentOrderProducerService.sendOrder(order);
@@ -37,12 +37,21 @@ public class OrderService {
 
     public void processRollbackOrder(@NonNull AvroOrder avroOrder) {
         Order order = converter.convert(avroOrder);
-        customerService.rollbackReservation(order);
+        try {
+            customerService.rollbackReservation(order);
+        } catch (ServiceException e) {
+            log.error("Error during rollback reservation", e);
+        }
+
     }
 
     public void processConfirmationOrder(@NonNull AvroOrder avroOrder) {
         Order order = converter.convert(avroOrder);
-        customerService.confirmReservation(order);
+        try {
+            customerService.confirmReservation(order);
+        } catch (ServiceException e) {
+            log.error("Error during confirmation reservation", e);
+        }
     }
 
 }
