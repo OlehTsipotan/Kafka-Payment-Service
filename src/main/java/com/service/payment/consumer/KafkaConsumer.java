@@ -1,6 +1,6 @@
 package com.service.payment.consumer;
 
-import com.service.payment.model.Order;
+import com.domain.avro.model.AvroOrder;
 import com.service.payment.service.OrderProcessingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,9 +17,9 @@ public class KafkaConsumer {
     private final OrderProcessingService orderProcessingService;
 
     @KafkaListener(id = "orders", topics = "orders", groupId = "payment")
-    public void onOrderReceive(Order order) {
-        log.info("Received: {}", order);
-        orderProcessingService.process(order);
+    public void onOrderReceive(AvroOrder avroOrder) {
+        log.info("Received: {}", avroOrder);
+        orderProcessingService.process(avroOrder);
     }
 
 }

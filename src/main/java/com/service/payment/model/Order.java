@@ -17,8 +17,6 @@ public class Order {
 
     private String source;
 
-    private String description;
-
     public Long getTotalPrice() {
         return product.getTotalPrice();
     }

@@ -2,11 +2,10 @@ package com.service.payment.service;
 
 import com.service.payment.entity.Customer;
 import com.service.payment.exception.EntityNotFoundException;
-import com.service.payment.exception.InsufficientAvailableBalanceException;
-import com.service.payment.exception.InsufficientReserveBalanceException;
 import com.service.payment.exception.ServiceException;
 import com.service.payment.model.Order;
 import com.service.payment.repository.CustomerRepository;
+import com.service.payment.validation.CustomerBalanceValidator;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class CustomerService {
 
     private final CustomerRepository customerRepository;
+
+    private final CustomerBalanceValidator customerReservationValidator;
 
     @Transactional
     public Long save(@NonNull Customer customer) {
@@ -38,45 +39,39 @@ public class CustomerService {
     @Transactional
     public void makeReservation(@NonNull Order order) {
         Customer customer = findById(order.getCustomerId());
-        Long orderPrice = order.getTotalPrice();
-        if (customer.getBalanceAvailable() < orderPrice) {
-            throw new InsufficientAvailableBalanceException(
-                    "Customer with id = " + customer.getId() + " has not enough money to pay for order with id" + " =" +
-                            " " + order.getId());
-        }
-        customer.setBalanceReserved(customer.getBalanceReserved() + orderPrice);
-        customer.setBalanceAvailable(customer.getBalanceAvailable() - orderPrice);
+
+        customerReservationValidator.validateReservationCreation(customer, order);
+
+        customer.setBalanceReserved(customer.getBalanceReserved() + order.getTotalPrice());
+        customer.setBalanceAvailable(customer.getBalanceAvailable() - order.getTotalPrice());
 
         execute(() -> customerRepository.save(customer));
+        log.info("Customer reservation created: {} for Order: {}", customer, order);
     }
 
     @Transactional
-    public void cancelReservation(@NonNull Order order) {
+    public void rollbackReservation(@NonNull Order order) {
         Customer customer = findById(order.getCustomerId());
-        Long orderPrice = order.getTotalPrice();
-        if (customer.getBalanceReserved() < orderPrice) {
-            throw new InsufficientReserveBalanceException(
-                    "Customer with id = " + customer.getId() + " has not enough reserved balance to refund for " +
-                            "order with id" + " =" + " " + order.getId());
-        }
-        customer.setBalanceReserved(customer.getBalanceReserved() - orderPrice);
-        customer.setBalanceAvailable(customer.getBalanceAvailable() + orderPrice);
+
+        customerReservationValidator.validateReservationRollback(customer, order);
+
+        customer.setBalanceReserved(customer.getBalanceReserved() - order.getTotalPrice());
+        customer.setBalanceAvailable(customer.getBalanceAvailable() + order.getTotalPrice());
 
         execute(() -> customerRepository.save(customer));
+        log.info("Customer reservation rollbacked: {} for Order: {}", customer, order);
     }
 
     @Transactional
     public void confirmReservation(@NonNull Order order) {
         Customer customer = findById(order.getCustomerId());
-        Long orderPrice = order.getTotalPrice();
-        if (customer.getBalanceReserved() < orderPrice) {
-            throw new InsufficientReserveBalanceException(
-                    "Customer with id = " + customer.getId() + " has not enough reserved balance to refund for " +
-                            "order with id" + " =" + " " + order.getId());
-        }
-        customer.setBalanceReserved(customer.getBalanceReserved() - orderPrice);
+
+        customerReservationValidator.validateReservationConfirmation(customer, order);
+
+        customer.setBalanceReserved(customer.getBalanceReserved() - order.getTotalPrice());
 
         execute(() -> customerRepository.save(customer));
+        log.info("Customer reservation confirmed: {} for Order: {}", customer, order);
     }
 
     private <T> T execute(DaoSupplier<T> supplier) {

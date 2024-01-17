@@ -1,6 +1,7 @@
 package com.service.payment.service;
 
-import com.service.payment.model.Order;
+import com.domain.avro.model.AvroOrder;
+import com.service.payment.converter.AvroOrderToOrderConverter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,21 +16,21 @@ public class OrderProcessingService {
 
     private final KafkaPaymentOrderProducerService kafkaPaymentOrderProducerService;
 
-    public void process(@NonNull Order order) {
-        order.setSource("PAYMENT");
-        switch (order.getStatus()) {
+    private final AvroOrderToOrderConverter converter;
+
+    public void process(@NonNull AvroOrder avroOrder) {
+        switch (avroOrder.getStatus()) {
             case NEW:
-                orderService.processNewOrder(order);
-                kafkaPaymentOrderProducerService.sendOrder(order);
+                orderService.processNewOrder(avroOrder);
                 break;
             case ROLLBACK:
-                orderService.processRollbackOrder(order);
+                orderService.processRollbackOrder(avroOrder);
                 break;
             case CONFIRMATION:
-                orderService.processConfirmationOrder(order);
+                orderService.processConfirmationOrder(avroOrder);
                 break;
             default:
-                log.warn("Unknown order status: {}", order.getStatus());
+                log.warn("Unknown order status: {}", avroOrder.getStatus());
         }
     }
 }

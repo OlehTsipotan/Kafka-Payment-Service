@@ -1,5 +1,7 @@
 package com.service.payment.service;
 
+import com.domain.avro.model.AvroOrder;
+import com.service.payment.converter.AvroOrderToOrderConverter;
 import com.service.payment.exception.ServiceException;
 import com.service.payment.model.Order;
 import com.service.payment.model.OrderStatus;
@@ -15,22 +17,31 @@ public class OrderService {
 
     private final CustomerService customerService;
 
-    public void processNewOrder(@NonNull Order order) {
+    private final KafkaPaymentOrderProducerService kafkaPaymentOrderProducerService;
+
+    private final AvroOrderToOrderConverter converter;
+
+    public void processNewOrder(@NonNull AvroOrder avroOrder) {
+        Order order = converter.convert(avroOrder);
+
         try {
             customerService.makeReservation(order);
             order.setStatus(OrderStatus.ACCEPT);
         } catch (ServiceException e) {
-            log.error("ServiceException: {}", e.getMessage());
-            order.setDescription(e.getMessage());
             order.setStatus(OrderStatus.REJECT);
+            throw e;
         }
+
+        kafkaPaymentOrderProducerService.sendOrder(order);
     }
 
-    public void processRollbackOrder(@NonNull Order order) {
-        customerService.cancelReservation(order);
+    public void processRollbackOrder(@NonNull AvroOrder avroOrder) {
+        Order order = converter.convert(avroOrder);
+        customerService.rollbackReservation(order);
     }
 
-    public void processConfirmationOrder(@NonNull Order order) {
+    public void processConfirmationOrder(@NonNull AvroOrder avroOrder) {
+        Order order = converter.convert(avroOrder);
         customerService.confirmReservation(order);
     }
 
