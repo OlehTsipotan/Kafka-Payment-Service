@@ -10,7 +10,6 @@ public class CustomerFromCustomerDtoUpdater {
 
     private final ModelMapper modelMapper;
 
-
     public CustomerFromCustomerDtoUpdater() {
         this.modelMapper = new ModelMapper();
         modelMapper.getConfiguration().setSkipNullEnabled(true);

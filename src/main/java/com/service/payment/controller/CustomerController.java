@@ -4,7 +4,6 @@ import com.service.payment.dto.CustomerDto;
 import com.service.payment.dto.DtoSearchResponse;
 import com.service.payment.service.CustomerService;
 import com.service.payment.utils.PaginationSortingUtils;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;

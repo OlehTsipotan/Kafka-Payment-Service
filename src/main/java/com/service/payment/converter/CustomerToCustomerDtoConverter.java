@@ -12,7 +12,6 @@ public class CustomerToCustomerDtoConverter implements Converter<Customer, Custo
 
     private final ModelMapper modelMapper;
 
-
     public CustomerToCustomerDtoConverter() {
         this.modelMapper = new ModelMapper();
     }

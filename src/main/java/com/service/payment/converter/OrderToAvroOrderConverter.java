@@ -15,7 +15,6 @@ public class OrderToAvroOrderConverter implements Converter<Order, AvroOrder> {
 
     private final ModelMapper modelMapper;
 
-
     public OrderToAvroOrderConverter() {
         this.modelMapper = new ModelMapper();
 
