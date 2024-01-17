@@ -28,7 +28,7 @@ public class KafkaPaymentOrderProducerService {
         AvroOrder avroOrder = converter.convert(order);
         try {
             this.template.send(topic, String.valueOf(avroOrder.getId()), avroOrder);
-            log.info("Order sent to Kafka: {}", avroOrder);
+            log.info("Produced to Kafka: {}", avroOrder);
         } catch (KafkaException e) {
             throw new ServiceException("Error sending order to Kafka", e);
         }

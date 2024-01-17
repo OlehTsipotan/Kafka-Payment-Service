@@ -18,7 +18,7 @@ public class KafkaConsumer {
 
     @KafkaListener(id = "orders", topics = "orders", groupId = "payment")
     public void onOrderReceive(AvroOrder avroOrder) {
-        log.info("Received: {}", avroOrder);
+        log.info("Received from Kafka: {}", avroOrder);
         orderProcessingService.process(avroOrder);
     }
 
