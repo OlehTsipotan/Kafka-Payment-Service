@@ -14,11 +14,11 @@ public class OrderProcessingService {
 
     private final OrderService orderService;
 
-    private final KafkaPaymentOrderProducerService kafkaPaymentOrderProducerService;
-
-    private final AvroOrderToOrderConverter converter;
-
     public void process(@NonNull AvroOrder avroOrder) {
+        if (avroOrder.getStatus() == null) {
+            log.warn("Order status is null for order: {}", avroOrder);
+            return;
+        }
         switch (avroOrder.getStatus()) {
             case NEW:
                 orderService.processNewOrder(avroOrder);
