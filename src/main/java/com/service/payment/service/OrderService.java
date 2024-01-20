@@ -25,7 +25,7 @@ public class OrderService {
         Order order = convertToEntity(avroOrder);
 
         try {
-            customerService.makeReservation(order);
+            customerService.createReservation(order);
             order.setStatus(OrderStatus.ACCEPT);
         } catch (ServiceException e) {
             order.setStatus(OrderStatus.REJECT);

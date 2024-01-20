@@ -60,13 +60,13 @@ public class OrderServiceTest {
         order.setStatus(OrderStatus.NEW);
 
         when(converterService.convert(avroOrder, Order.class)).thenReturn(order);
-        doThrow(ServiceException.class).when(customerService).makeReservation(order);
+        doThrow(ServiceException.class).when(customerService).createReservation(order);
 
         assertDoesNotThrow(() -> orderService.processNewOrder(avroOrder));
         assertEquals(order.getStatus(), OrderStatus.REJECT);
 
         verify(converterService).convert(avroOrder, Order.class);
-        verify(customerService).makeReservation(order);
+        verify(customerService).createReservation(order);
         verify(kafkaPaymentOrderProducerService).sendOrder(order);
     }
 
@@ -82,7 +82,7 @@ public class OrderServiceTest {
         assertEquals(order.getStatus(), OrderStatus.ACCEPT);
 
         verify(converterService).convert(avroOrder, Order.class);
-        verify(customerService).makeReservation(order);
+        verify(customerService).createReservation(order);
         verify(kafkaPaymentOrderProducerService).sendOrder(order);
     }
 

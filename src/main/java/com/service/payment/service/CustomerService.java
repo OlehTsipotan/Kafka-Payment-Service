@@ -11,7 +11,6 @@ import com.service.payment.model.Order;
 import com.service.payment.repository.CustomerRepository;
 import com.service.payment.validation.CustomerBalanceValidator;
 import com.service.payment.validation.CustomerValidator;
-import jakarta.validation.Valid;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,15 +37,7 @@ public class CustomerService {
     private final ConverterService converter;
 
     @Transactional
-    public Long save(@NonNull Customer customer) {
-        customerValidator.validate(customer);
-        Customer savedCustomer = execute(() -> customerRepository.save(customer));
-        log.info("Saved Customer {}", savedCustomer);
-        return savedCustomer.getId();
-    }
-
-    @Transactional
-    public Long save(@NonNull CustomerDto customerDto) {
+    public Long create(@NonNull CustomerDto customerDto) {
         Customer customer = convertToEntity(customerDto);
         customerValidator.validate(customer);
         Customer savedCustomer = execute(() -> {
@@ -55,12 +46,12 @@ public class CustomerService {
             }
             return customerRepository.save(customer);
         });
-        log.info("Saved Customer {}", savedCustomer);
+        log.info("Created Customer {}", savedCustomer);
         return savedCustomer.getId();
     }
 
     @Transactional
-    public CustomerDto update(@NonNull @Valid CustomerDto customerDto, @NonNull Long id) {
+    public CustomerDto update(@NonNull CustomerDto customerDto, @NonNull Long id) {
         Customer customerToUpdate = execute(() -> {
             Customer customer = customerRepository.findById(id)
                     .orElseThrow(() -> new EntityNotFoundException("There is no Customer to update with id = " + id));
@@ -109,7 +100,7 @@ public class CustomerService {
     }
 
     @Transactional
-    public void makeReservation(@NonNull Order order) {
+    public void createReservation(@NonNull Order order) {
         Customer customer = findById(order.getCustomerId());
 
         customerReservationValidator.validateReservationCreation(customer, order);

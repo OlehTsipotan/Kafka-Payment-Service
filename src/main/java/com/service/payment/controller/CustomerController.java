@@ -21,7 +21,7 @@ public class CustomerController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Long create(@RequestBody CustomerDto customerDto) {
-        return service.save(customerDto);
+        return service.create(customerDto);
     }
 
     @PatchMapping("/{customerId}")
