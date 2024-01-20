@@ -1,4 +1,4 @@
-package com.service.payment.service;
+package com.service.payment.converter;
 
 import com.service.payment.dto.CustomerDto;
 import com.service.payment.entity.Customer;
