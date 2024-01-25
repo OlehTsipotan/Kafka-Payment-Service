@@ -19,6 +19,7 @@ import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.jetbrains.annotations.NotNull;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -71,6 +72,12 @@ public class KafkaPaymentOrderProducerServiceIntegrationTest {
     static void startKafkaContainer() {
         KAFKA.start();
         SCHEMA_REGISTRY.withKafka(KAFKA).start();
+    }
+
+    @AfterAll
+    static void stopKafkaContainer() {
+        SCHEMA_REGISTRY.stop();
+        KAFKA.stop();
     }
 
     @NotNull
