@@ -1,6 +1,6 @@
 package com.service.payment.service;
 
-import com.domain.avro.model.AvroOrder;
+import com.service.avro.model.AvroOrder;
 import com.service.payment.converter.ConverterService;
 import com.service.payment.exception.ServiceException;
 import com.service.payment.model.Order;

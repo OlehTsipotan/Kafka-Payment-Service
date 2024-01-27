@@ -1,7 +1,7 @@
 package com.service.payment.service;
 
-import com.domain.avro.model.AvroOrder;
-import com.domain.avro.model.AvroOrderStatus;
+import com.service.avro.model.AvroOrder;
+import com.service.avro.model.AvroOrderStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

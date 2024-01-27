@@ -1,6 +1,6 @@
 package com.service.payment.converter;
 
-import com.domain.avro.model.AvroOrder;
+import com.service.avro.model.AvroOrder;
 import com.service.payment.model.Order;
 import lombok.NonNull;
 import org.modelmapper.Condition;

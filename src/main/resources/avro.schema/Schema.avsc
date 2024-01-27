@@ -1,0 +1,81 @@
+[
+  {
+    "type": "record",
+    "name": "AvroProduct",
+    "namespace": "com.service.avro.model",
+    "fields": [
+      {
+        "name": "id",
+        "type": "long"
+      },
+      {
+        "name": "quantity",
+        "type": "int"
+      },
+      {
+        "name": "price",
+        "type": "long"
+      }
+    ]
+  },
+  {
+    "type": "record",
+    "name": "AvroOrder",
+    "namespace": "com.service.avro.model",
+    "fields": [
+      {
+        "name": "id",
+        "type": [
+          "null",
+          {
+            "type": "string",
+            "avro.java.string": "String"
+          }
+        ],
+        "default": null
+      },
+      {
+        "name": "customerId",
+        "type": [
+          "null",
+          "long"
+        ],
+        "default": null
+      },
+      {
+        "name": "product",
+        "type": [
+          "null",
+          "AvroProduct"
+        ],
+        "default": null
+      },
+      {
+        "name": "status",
+        "type": [
+          "null",
+          {
+            "type": "enum",
+            "name": "AvroOrderStatus",
+            "symbols": [
+              "NEW",
+              "ACCEPT",
+              "REJECT",
+              "CONFIRMATION",
+              "ROLLBACK"
+            ]
+          }
+        ],
+        "default": null
+      },
+      {
+        "name": "source",
+        "type": [
+          "null",
+          "string"
+        ],
+        "default": null
+      }
+    ]
+  }
+]

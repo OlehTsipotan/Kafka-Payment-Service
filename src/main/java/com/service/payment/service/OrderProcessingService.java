@@ -1,7 +1,6 @@
 package com.service.payment.service;
 
-import com.domain.avro.model.AvroOrder;
-import com.service.payment.converter.AvroOrderToOrderConverter;
+import com.service.avro.model.AvroOrder;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

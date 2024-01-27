@@ -1,7 +1,7 @@
 package com.service.payment.converter;
 
-import com.domain.avro.model.AvroOrder;
-import com.domain.avro.model.AvroProduct;
+import com.service.avro.model.AvroOrder;
+import com.service.avro.model.AvroProduct;
 import com.service.payment.model.Order;
 import com.service.payment.model.OrderStatus;
 import com.service.payment.model.Product;

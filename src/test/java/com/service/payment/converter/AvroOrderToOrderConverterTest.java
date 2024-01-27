@@ -1,8 +1,8 @@
 package com.service.payment.converter;
 
-import com.domain.avro.model.AvroOrder;
-import com.domain.avro.model.AvroOrderStatus;
-import com.domain.avro.model.AvroProduct;
+import com.service.avro.model.AvroOrder;
+import com.service.avro.model.AvroOrderStatus;
+import com.service.avro.model.AvroProduct;
 import com.service.payment.model.Order;
 import com.service.payment.model.Product;
 import org.junit.jupiter.api.BeforeEach;
