@@ -58,7 +58,7 @@ Order communication schema:
 ### Go back to the [***Spring Kafka Order System***](https://github.com/OlehTsipotan/Spring-Kafka-Order-System)
 
 > ### Documentation
-> - [Swagger UI](http://localhost:8080/swagger-ui.html) -> `http://localhost:8080/swagger-ui.html`
+> - [Swagger UI](http://localhost:8082/swagger-ui.html) -> `http://localhost:8082/swagger-ui.html`
 
 ## Credits
 Oleh Tsipotan - developer (https://www.linkedin.com/in/oleh-tsipotan/)
