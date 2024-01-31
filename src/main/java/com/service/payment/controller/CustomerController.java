@@ -26,7 +26,7 @@ public class CustomerController {
     @Operation(summary = "Create the Customer")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Customer created successfully", content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = CustomerDto.class))}),
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = Long.class))}),
             @ApiResponse(responseCode = "409", description = "Customer already exists", content = @Content)})
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -59,7 +59,7 @@ public class CustomerController {
     @Operation(summary = "Retrieve the Customers")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Customers retrieved successfully", content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = CustomerDto.class))})})
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = DtoSearchResponse.class))})})
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public DtoSearchResponse getAll(@RequestParam(defaultValue = "100") int limit,
@@ -71,8 +71,7 @@ public class CustomerController {
 
     @Operation(summary = "Delete the Customer by Id")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Customer deleted successfully", content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = CustomerDto.class))}),
+            @ApiResponse(responseCode = "204", description = "Customer deleted successfully"),
             @ApiResponse(responseCode = "404", description = "Customer not found", content = @Content)})
     @DeleteMapping("/{customerId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
