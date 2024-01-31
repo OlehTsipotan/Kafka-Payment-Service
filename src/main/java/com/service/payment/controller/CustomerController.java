@@ -16,7 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/customers")
+@RequestMapping("/api/v1/customers")
 @Slf4j
 @RequiredArgsConstructor
 public class CustomerController {
