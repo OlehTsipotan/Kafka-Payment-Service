@@ -57,5 +57,8 @@ Order communication schema:
 ## How to Install and Run the Project
 ### Go back to the [***Spring Kafka Order System***](https://github.com/OlehTsipotan/Spring-Kafka-Order-System)
 
+> ### Documentation
+> - [Swagger UI](http://localhost:8080/swagger-ui.html) -> `http://localhost:8080/swagger-ui.html`
+
 ## Credits
 Oleh Tsipotan - developer (https://www.linkedin.com/in/oleh-tsipotan/)
