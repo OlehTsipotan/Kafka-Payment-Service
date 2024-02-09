@@ -41,7 +41,7 @@ public class CustomerControllerTest {
         customerDto.setBalanceAvailable(1000L);
         customerDto.setBalanceReserved(1000L);
 
-        mockMvc.perform(post("/customers").contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(post("/api/v1/customers").contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(customerDto))).andExpect(status().isCreated())
                 .andExpect(content().string("1"));
 
@@ -52,7 +52,7 @@ public class CustomerControllerTest {
     @ParameterizedTest
     @NullSource
     public void create_whenCustomerDTOIsNull_statusIsBadRequest(CustomerDto customerDto) throws Exception {
-        mockMvc.perform(post("/customers").contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(post("/api/v1/customers").contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(customerDto))).andExpect(status().isBadRequest());
 
         verifyNoInteractions(customerService);
@@ -60,7 +60,7 @@ public class CustomerControllerTest {
 
     @Test
     public void delete_success() throws Exception {
-        mockMvc.perform(delete("/customers/1")).andExpect(status().isNoContent());
+        mockMvc.perform(delete("/api/v1/customers/1")).andExpect(status().isNoContent());
 
         verify(customerService).deleteById(1L);
         verifyNoMoreInteractions(customerService);
@@ -68,7 +68,7 @@ public class CustomerControllerTest {
 
     @Test
     public void delete_whenCustomerIdIsInvalid_statusIsBadRequest() throws Exception {
-        mockMvc.perform(delete("/customers/invalid")).andExpect(status().isBadRequest());
+        mockMvc.perform(delete("/api/v1/customers/invalid")).andExpect(status().isBadRequest());
 
         verifyNoInteractions(customerService);
     }
@@ -86,7 +86,7 @@ public class CustomerControllerTest {
 
         when(customerService.update(any(CustomerDto.class), any(Long.class))).thenReturn(customerDTOToDisplay);
 
-        mockMvc.perform(patch("/customers/1").contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(patch("/api/v1/customers/1").contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(customerDto))).andExpect(status().isOk())
                 .andExpect(content().json(objectMapper.writeValueAsString(customerDTOToDisplay)));
 
@@ -97,7 +97,7 @@ public class CustomerControllerTest {
     @ParameterizedTest
     @NullSource
     public void update_whenCustomerDTOIsNull_statusIsBadRequest(CustomerDto customerDto) throws Exception {
-        mockMvc.perform(patch("/customers/1").contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(patch("/api/v1/customers/1").contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(customerDto))).andExpect(status().isBadRequest());
 
         verifyNoInteractions(customerService);
@@ -110,7 +110,7 @@ public class CustomerControllerTest {
         customerDto.setBalanceAvailable(1000L);
         customerDto.setBalanceReserved(1000L);
 
-        mockMvc.perform(patch("/customers/invalid").contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(patch("/api/v1/customers/invalid").contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(customerDto))).andExpect(status().isBadRequest());
 
         verifyNoInteractions(customerService);
@@ -125,7 +125,7 @@ public class CustomerControllerTest {
 
         when(customerService.findByIdAsDto(any(Long.class))).thenReturn(customerDto);
 
-        mockMvc.perform(get("/customers/1")).andExpect(status().isOk())
+        mockMvc.perform(get("/api/v1/customers/1")).andExpect(status().isOk())
                 .andExpect(content().json(objectMapper.writeValueAsString(customerDto)));
 
         verify(customerService).findByIdAsDto(1L);
@@ -134,7 +134,7 @@ public class CustomerControllerTest {
 
     @Test
     public void getById_whenCustomerIdIsInvalid_statusIsBadRequest() throws Exception {
-        mockMvc.perform(get("/customers/invalid")).andExpect(status().isBadRequest());
+        mockMvc.perform(get("/api/v1/customers/invalid")).andExpect(status().isBadRequest());
 
         verifyNoInteractions(customerService);
     }
@@ -150,7 +150,7 @@ public class CustomerControllerTest {
 
         when(customerService.findAll(any())).thenReturn(dtoSearchResponse);
 
-        mockMvc.perform(get("/customers")).andExpect(status().isOk())
+        mockMvc.perform(get("/api/v1/customers")).andExpect(status().isOk())
                 .andExpect(content().json(objectMapper.writeValueAsString(dtoSearchResponse)));
 
         verify(customerService).findAll(any());
@@ -160,7 +160,7 @@ public class CustomerControllerTest {
     // It is not depends on the parameter selection.
     @Test
     public void getAll_whenLimitIsInvalid_statusIsBadRequest() throws Exception {
-        mockMvc.perform(get("/customers?limit=invalid")).andExpect(status().isBadRequest());
+        mockMvc.perform(get("/api/v1/customers?limit=invalid")).andExpect(status().isBadRequest());
 
         verifyNoInteractions(customerService);
     }
